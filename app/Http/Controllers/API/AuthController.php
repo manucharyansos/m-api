@@ -6,45 +6,35 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\ApiController;
 
 class AuthController extends ApiController
 {
-//    public function login(Request $request)
-//    {
-//        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-//            $user = Auth::user();
-//
-////            $response['token'] =  $user->createToken($request->device_name)->plainTextToken;
-//            $response['name'] =  $user->name;
-//
-//            return $this->successResponse('User successfully logged-in.', $response);
-//        }
-//        else {
-//            return $this->errorResponse('Unauthorized.', ['error'=>'Unauthorized'], 403);
-//        }
-//    }
     public function login(Request $request)
     {
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        $data = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string'
+        ]);
 
-        if (Auth::attempt($credentials)) {
-            $success = true;
-            $user = User::where('email', $credentials['email'])->first();
-            $token = $user->createToken("authToken")->plainTextToken;
-        } else {
-            $success = false;
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return response([
+                'msg' => 'incorrect username or password'
+            ], 401);
         }
 
-        $response = [
-            'success' => $success,
-            'access_token' => $token,
+        $token = $user->createToken('apiToken')->plainTextToken;
+
+        $res = [
+            'user' => $user,
+            'token' => $token
         ];
-        return response()->json($response);
+
+        return response($res, 201);
     }
 
     public function register(Request $request)
@@ -65,17 +55,21 @@ class AuthController extends ApiController
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
 
-        $response['token'] =  $user->createToken($request->device_name)->plainTextToken;
-        $response['name'] =  $user->name;
+        $token = $user->createToken('apiToken')->plainTextToken;
 
-        return $this->successResponse('User created successfully.', $response);
+        $res = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response($res, 201);
     }
 
     public function logout()
     {
-        auth()->user()->currentAccessToken()->delete();
-
-        return $this->successResponse('Logout successfully.');
+        auth()->user()->tokens()->delete();
+        return [
+            'message' => 'user logged out'
+        ];
     }
 
     public function me()
