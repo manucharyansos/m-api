@@ -14,14 +14,6 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-//        return parent::toArray($request);
-        return [
-            'id' => (int) $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'price' => (float) $this->price,
-            'updated_at' => (string) $this->updated_at,
-            'created_at' => (string) $this->created_at,
-        ];
+        return parent::toArray($request);
     }
 }
