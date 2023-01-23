@@ -11,7 +11,11 @@ Route::post('register', [AuthController::class, 'register']);
 
 
 Route::middleware('auth:sanctum')->group( function () {
-    Route::resource('products', ProductController::class);
     Route::get('user',       [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::group(['middleware' => ['admin']], function () {
+        Route::resource('products', ProductController::class);
+
+    });
 });
+

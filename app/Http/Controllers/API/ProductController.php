@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends BaseController
 {
+//    public function __construct()
+//    {
+//        $this->middleware('admin');
+//    }
     public function index()
     {
         $products = Product::all();

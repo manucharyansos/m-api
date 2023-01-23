@@ -31,4 +31,7 @@ return [
 
     'supports_credentials' => true,
 
+    'login',
+    'logout',
+
 ];
