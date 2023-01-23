@@ -26,10 +26,11 @@ class ProductController extends BaseController
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'title' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'description' => 'required',
-            'price' => 'required'
+            'categories' => 'required||min:3',
+            'title' => 'required|min:3',
+            'description' => 'required|min:3',
+            'price' => 'required|min:3'
         ]);
 
         if ($validator->fails()) {
@@ -39,10 +40,11 @@ class ProductController extends BaseController
             $imageName = time() . '.' . $request->file('image')->extension();
             $request->image->move(public_path('images'), $imageName);
             $product = Product::create([
+                'image' => $imageName,
+                'categories' => $request->categories,
                 'title' => $request->title,
                 'description' => $request->description,
                 'price' => $request->price,
-                'image' => $imageName
             ]);
         }
 
@@ -67,8 +69,9 @@ class ProductController extends BaseController
     public function update(Request $request, Product $product)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'categories' => 'required|min:3',
+            'title' => 'required|min:3',
             'description' => 'required',
             'price' => 'required'
         ]);
@@ -79,8 +82,9 @@ class ProductController extends BaseController
 
         $input = $validator->validated();
 
-        $product->title = $input['title'];
         $product->image = $input['image'];
+        $product->categories = $input['categories'];
+        $product->title = $input['title'];
         $product->description = $input['description'];
         $product->price = $input['price'];
         $product->save();
