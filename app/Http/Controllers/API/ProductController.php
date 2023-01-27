@@ -20,17 +20,12 @@ class ProductController extends BaseController
         return $this->sendResponse(ProductResource::collection($product), 'Products retrieved successfully.');
     }
 
-//    public function category(){
-//        $product = Product::with('category')->get();
-//        return response()->json($product);
-//    }
 
     public function store(Request $request)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-//            'category_id' => 'required',
             'title' => 'required|min:3',
             'description' => 'required|min:3',
             'price' => 'required|min:3'
@@ -50,10 +45,7 @@ class ProductController extends BaseController
                 'price' => $request->price,
             ]);
         }
-
         return $this->sendResponse(new ProductResource($product), 'Product created successfully.');
-
-
     }
 
 
