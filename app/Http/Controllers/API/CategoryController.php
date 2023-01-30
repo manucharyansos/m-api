@@ -26,14 +26,22 @@ class CategoryController extends BaseController
         $input = $request->all();
         $validator = Validator::make($input, [
             'name' => 'required|min:3',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'description' => 'required|min:3',
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $category = Category::create([
-            'name' => $request->name,
-        ]);
-        return $this->sendResponse(new CategoryResource($category), 'Category created successfully.');
+        if ($request->file('image')){
+            $imageName = time() . '.' . $request->file('image')->extension();
+            $request->image->move(public_path('category-images'), $imageName);
+            $category = Category::create([
+                'image' => $imageName,
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+        }
+        return $this->sendResponse(new CategoryResource($category), 'Product created successfully.');
     }
 }
