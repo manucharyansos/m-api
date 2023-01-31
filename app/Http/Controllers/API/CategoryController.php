@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends BaseController
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function index(){
         $category = Category::all();
-//        return $this->sendResponse(CategoryResource::collection($category), 'Products retrieved successfully.');
-    return response()->json($category);
+        return $this->sendResponse(CategoryResource::collection($category), 'Category retrieved successfully.');
+//    return response()->json($category);
     }
 
     //    public function category(){
@@ -42,6 +47,19 @@ class CategoryController extends BaseController
                 'description' => $request->description,
             ]);
         }
-        return $this->sendResponse(new CategoryResource($category), 'Product created successfully.');
+        return $this->sendResponse(new CategoryResource($category), 'Category created successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+        unlink("category-images/".$category->image);
+        if (is_null($category)) {
+            return $this->sendError('Category does not exist.');
+        }
+
+        $category->delete();
+
+        return $this->sendResponse([], 'Category deleted successfully.');
     }
 }

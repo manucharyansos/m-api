@@ -90,7 +90,7 @@ class ProductController extends BaseController
     public function destroy($id)
     {
         $product = Product::find($id);
-
+        unlink("images/".$product->image);
         if (is_null($product)) {
             return $this->sendError('Product does not exist.');
         }
