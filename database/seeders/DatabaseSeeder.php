@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,8 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run() {
+    public function run(): void
+    {
         User::truncate();
         $users = [
             [
@@ -40,9 +42,16 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
-                'password' => Hash::make($user['password']),
+                'password' => bcrypt($user['password']),
                 'role' => $user['role']
             ]);
         }
+        Product::create([
+            'image' => 'test',
+            'category_id' => 1,
+            'title' => 'Phone',
+            'description' => 'description',
+            'price' => 200
+        ]);
     }
 }

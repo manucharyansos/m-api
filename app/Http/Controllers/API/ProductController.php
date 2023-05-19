@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,7 @@ class ProductController extends BaseController
     {
         $this->middleware('admin');
     }
-    public function index()
+    public function index(): JsonResponse
     {
         $product = Product::with('category')->get();
         return $this->sendResponse(ProductResource::collection($product), 'Products retrieved successfully.');
