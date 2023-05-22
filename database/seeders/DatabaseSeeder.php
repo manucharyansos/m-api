@@ -28,13 +28,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'User',
                 'email' => 'user@gmail.com',
                 'password' => '123456',
-                'role' => null,
+                'role' => 0,
             ],
             [
                 'name' => 'Client',
                 'email' => 'client@gmail.com',
                 'password' => '123456',
-                'role' => null,
+                'role' => 0,
             ]
         ];
         foreach($users as $user)

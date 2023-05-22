@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,9 +16,9 @@ class IsAdmin
      *
      * @param Request $request
      * @param  \Closure(Request): (Response|RedirectResponse)  $next
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function handle(Request $request, Closure $next): \Illuminate\Http\JsonResponse
+    public function handle(Request $request, Closure $next): JsonResponse
     {
         if (Auth::user() &&  Auth::user()->role == 1) {
             return $next($request);

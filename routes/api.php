@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
@@ -20,6 +21,10 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::group(['middleware' => ['admin']], function () {
         Route::resource('categories',CategoryController::class);
+    });
+
+    Route::group(['prefix'=>'users'],function (){
+        Route::get('/info', [UserController::class, 'index']);
     });
 });
 
