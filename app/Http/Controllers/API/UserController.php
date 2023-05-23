@@ -17,10 +17,12 @@ class UserController extends BaseController
         $user->address = $request->input('address');
         $user->contact = $request->input('contact');
         $user->bio = $request->input('bio');
+        $user->gender = $request->input('gender');
+        $user->birthday = $request->input('birthday');
         if ($request->file('image')) {
             $image = $request->file('image');
             $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move('public/user-images', $fileName);
+            $image->move(public_path('user-images'), $fileName);
             $user->image = $fileName;
             $user->save();
         }
