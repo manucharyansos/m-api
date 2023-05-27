@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Mail\CreateUser;
+use App\Mail\OrderOut;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends BaseController
 {
@@ -27,7 +30,8 @@ class UserController extends BaseController
             $user->save();
         }
         $user->save();
-
+//        return $user;
+        Mail::to($request->user())->send(new CreateUser($user));
         return $this->sendResponse('User successfully updated.', $user);
     }
 }
