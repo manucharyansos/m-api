@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api\User;
 
+use App\Http\Controllers\Controller;
 use App\Mail\CreateUser;
-use App\Mail\OrderOut;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class UserController extends BaseController
+class UserController extends Controller
 {
     public function updateUser(Request $request, $id)
     {

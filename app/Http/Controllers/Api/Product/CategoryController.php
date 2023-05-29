@@ -1,30 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends BaseController
+class CategoryController extends Controller
 {
     public function __construct()
     {
         $this->middleware('admin');
     }
 
-    public function index(){
+    public function index(): JsonResponse
+    {
         $category = Category::all();
-        return $this->sendResponse(CategoryResource::collection($category), 'Category retrieved successfully.');
-//    return response()->json($category);
+        return response()->json($category);
     }
-
-    //    public function category(){
-//        $product = Product::with('category')->get();
-//        return response()->json($product);
-//    }
 
     public function store(Request $request)
     {
@@ -47,7 +43,7 @@ class CategoryController extends BaseController
                 'description' => $request->description,
             ]);
         }
-        return $this->sendResponse(new CategoryResource($category), 'Category created successfully.');
+        return response()->json($category, 'Category created successfully.');
     }
 
     public function destroy($id)
@@ -55,11 +51,11 @@ class CategoryController extends BaseController
         $category = Category::find($id);
         unlink("category-images/".$category->image);
         if (is_null($category)) {
-            return $this->sendError('Category does not exist.');
+            return response()->json('Category does not exist.');
         }
 
         $category->delete();
 
-        return $this->sendResponse([], 'Category deleted successfully.');
+        return response()->json([], 'Category deleted successfully.');
     }
 }
