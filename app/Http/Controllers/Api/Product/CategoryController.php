@@ -22,7 +22,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         return response()->json($category, 'Category created successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $category = Category::find($id);
         unlink("category-images/".$category->image);

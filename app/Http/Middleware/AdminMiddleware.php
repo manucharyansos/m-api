@@ -19,7 +19,6 @@ class AdminMiddleware
         if ($request->user() && $request->user()->role === 1) {
             return $next($request);
         }
-
         return response()->json(['message' => 'Unauthorized.'], 401);
     }
 }

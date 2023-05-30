@@ -53,10 +53,14 @@ class ProductController extends Controller
         $product->save();
 
         if ($request->hasFile('images')) {
+            $imagePaths = [];
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $product->images()->create(['path' => $path]);
+                $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('product-images'), $fileName);
+                $imagePaths[] = $fileName;
             }
+            $product->images = json_encode($imagePaths);
+            $product->save();
         }
 
         return response()->json($product, 201);
