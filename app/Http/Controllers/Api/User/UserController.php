@@ -28,7 +28,6 @@ class UserController extends Controller
                 $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('user-images'), $fileName);
                 $user->image = $fileName;
-                $user->save();
             }
             $user->save();
             Mail::to($request->user())->send(new CreateUser($user));

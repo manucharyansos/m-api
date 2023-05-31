@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,7 +26,7 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        $products = Product::all();
+        $products = Product::with('images')->get();
         return response()->json($products);
     }
 
@@ -38,32 +39,33 @@ class ProductController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
-            'category_id' => 'required|integer',
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required|integer',
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $product = new Product();
-        $product->category_id = $validatedData['category_id'];
-        $product->title = $validatedData['title'];
-        $product->description = $validatedData['description'];
-        $product->price = $validatedData['price'];
-        $product->save();
+        $product = Product::create([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'category_id' => $validatedData['category_id'],
+        ]);
 
-        if ($request->hasFile('images')) {
-            $imagePaths = [];
-            foreach ($request->file('images') as $image) {
-                $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('product-images'), $fileName);
-                $imagePaths[] = $fileName;
-            }
-            $product->images = json_encode($imagePaths);
-            $product->save();
+        foreach ($validatedData['images'] as $image) {
+            $imageName = time() . '-' . $image->getClientOriginalName();
+            $image->move(public_path('products-images'), $imageName);
+
+            $productImage = new ProductImage([
+                'image_path' => $imageName,
+            ]);
+
+            $product->images()->save($productImage);
         }
 
-        return response()->json($product, 201);
+        return response()->json(['message' => 'Product created successfully']);
     }
 
     /**

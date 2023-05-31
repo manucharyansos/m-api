@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
         Product::create([
-            'images' => 'test',
+//            'images' => 'test',
             'category_id' => 1,
             'title' => 'Phone',
             'description' => 'description',
