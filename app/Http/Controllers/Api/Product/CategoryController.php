@@ -24,26 +24,28 @@ class CategoryController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required|min:3',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'description' => 'required|min:3',
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('category-images'), $imageName);
+            $category->image = $imageName;
         }
-        if ($request->file('image')){
-            $imageName = time() . '.' . $request->file('image')->extension();
-            $request->image->move(public_path('category-images'), $imageName);
-            $category = Category::create([
-                'image' => $imageName,
-                'name' => $request->name,
-                'description' => $request->description,
-            ]);
-        }
-        return response()->json($category, 'Category created successfully.');
+        $category->save();
+
+        return response()->json([
+            'message' => 'Category created successfully',
+            'category' => $category,
+        ], 201);
     }
 
     public function destroy($id): JsonResponse
