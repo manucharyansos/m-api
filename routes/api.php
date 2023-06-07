@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group( function () {
     });
 
     Route::group(['prefix'=>'users'],function (){
+        Route::get('/', [UserController::class, 'index']);
         Route::post('/update/info/{id}', [UserController::class, 'updateUser']);
     });
 });

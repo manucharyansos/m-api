@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $user = User::all();
+        return response()->json($user);
+    }
     public function updateUser(Request $request, $id): JsonResponse
     {
         try {

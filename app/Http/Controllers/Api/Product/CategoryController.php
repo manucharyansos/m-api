@@ -48,16 +48,9 @@ class CategoryController extends Controller
         ], 201);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Category $category): JsonResponse
     {
-        $category = Category::find($id);
-        unlink("category-images/".$category->image);
-        if (is_null($category)) {
-            return response()->json('Category does not exist.');
-        }
-
         $category->delete();
-
-        return response()->json([], 'Category deleted successfully.');
+        return response()->json('Category deleted successfully', 204);
     }
 }
