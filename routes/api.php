@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Product\CategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
+use App\Http\Controllers\Api\Product\SubcategoryController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::group(['middleware' => ['admin']], function () {
         Route::resource('categories',CategoryController::class);
+        Route::resource('subcategories',SubcategoryController::class);
     });
 
     Route::group(['prefix'=>'users'],function (){

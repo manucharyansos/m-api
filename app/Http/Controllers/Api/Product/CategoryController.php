@@ -18,8 +18,8 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $category = Category::all();
-        return response()->json($category);
+        $categories = Category::with('subcategories')->get();
+        return response()->json($categories);
     }
 
     public function store(Request $request): JsonResponse
