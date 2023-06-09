@@ -13,9 +13,9 @@ class AuthController extends Controller
     public function register(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|min:3|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         $validatedData['password'] = bcrypt($validatedData['password']);
