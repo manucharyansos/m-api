@@ -42,4 +42,33 @@ class UserController extends Controller
             return response()->json($e->getMessage(),  404);
         }
     }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|min:3',
+            'last_name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'role' => 'required|numeric',
+            'number' => 'required|numeric',
+            'address' => 'required'
+        ]);
+
+        $validatedData['password'] = bcrypt($validatedData['password']);
+
+        $user = User::create($validatedData);
+
+        return response()->json(['user' => $user, 'User created successfully']);
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully.']);
+    }
 }
