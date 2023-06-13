@@ -15,9 +15,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('user',       [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
-//    Route::group(['middleware' => ['admin']], function () {
-//        Route::resource('products', ProductController::class);
-//    });
+
     Route::middleware('admin')->group(function () {
         Route::resource('products', ProductController::class);
     });
@@ -32,6 +30,12 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::post('/update/info/{id}', [UserController::class, 'updateUser']);
         Route::post('/store', [UserController::class, 'store']);
         Route::delete('/userDelete/{id}', [UserController::class, 'destroy']);
+    });
+    Route::group(['prefix'=>'products'],function (){
+        Route::get('/', [ProductController::class, 'index']);
+    });
+    Route::group(['prefix'=>'categories'],function (){
+        Route::get('/', [CategoryController::class, 'index']);
     });
 });
 

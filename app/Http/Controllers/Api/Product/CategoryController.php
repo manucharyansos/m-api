@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
 
     public function index(): JsonResponse
     {
