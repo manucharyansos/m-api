@@ -30,21 +30,21 @@ class CategoryController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $category = new Category();
-        $category->name = $request->name;
-        $category->description = $request->description;
+        $subcategory = new Category();
+        $subcategory->name = $request->name;
+        $subcategory->description = $request->description;
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('category-images'), $imageName);
-            $category->image = $imageName;
+            $subcategory->image = $imageName;
         }
-        $category->save();
+        $subcategory->save();
 
         return response()->json([
-            'message' => 'Category created successfully',
-            'category' => $category,
+            'message' => 'Subcategory created successfully',
+            'subcategory' => $subcategory,
         ], 201);
     }
 

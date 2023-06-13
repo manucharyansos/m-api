@@ -43,6 +43,7 @@ class SubcategoryController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required'
         ]);
 
         $subCategory = new Subcategory();
