@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $categories = Category::with('subcategories')->get();
+        $categories = Category::with('subcategories', 'products')->get();
         return response()->json($categories);
     }
 

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::truncate();
+//        User::truncate();
         $users = [
             [
                 'name' => 'Admin',
@@ -52,7 +52,8 @@ class DatabaseSeeder extends Seeder
             'category_id' => 1,
             'title' => 'Phone',
             'description' => 'description',
-            'price' => 200
+            'price' => 200,
+            'stock' => 35
         ]);
         Category::create([
             'name' => 'Man',

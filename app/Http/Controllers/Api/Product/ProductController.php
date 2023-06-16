@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        $products = Product::with('images')->get();
+        $products = Product::with('images', 'reviews')->get();
         return response()->json($products);
     }
 
@@ -36,6 +36,7 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
+            'stock' => 'required|numeric',
             'category_id' => 'required|integer',
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
@@ -45,6 +46,7 @@ class ProductController extends Controller
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],
+            'stock' => $validatedData['stock'],
             'category_id' => $validatedData['category_id'],
         ]);
 
@@ -87,13 +89,14 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
+            'stock' => 'required|numeric',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         $product->category_id = $validatedData['category_id'];
         $product->title = $validatedData['title'];
         $product->description = $validatedData['description'];
         $product->price = $validatedData['price'];
+        $product->stock = $validatedData['stock'];
         $product->save();
 
         if ($request->hasFile('images')) {
@@ -102,7 +105,6 @@ class ProductController extends Controller
                 $product->images()->create(['path' => $path]);
             }
         }
-
         return response()->json($product, 200);
     }
 
