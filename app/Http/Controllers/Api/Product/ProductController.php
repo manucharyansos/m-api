@@ -64,6 +64,16 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product created successfully']);
     }
 
+
+    public function edit($id): JsonResponse
+    {
+        $product = Product::with('images', 'reviews')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found.'], 404);
+        }
+        return response()->json($product);
+    }
+
     /**
      * Display the specified product.
      *
