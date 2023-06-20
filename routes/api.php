@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::post('/reviews/{product}', [ReviewController::class, 'store']);
         Route::get('/reviews/{product}', [ReviewController::class, 'index']);
         Route::get('/{id}/edit', [ProductController::class, 'edit']);
+        Route::get('/{id}', [ProductController::class, 'show']);
     });
     Route::group(['prefix'=>'categories'],function (){
         Route::get('/', [CategoryController::class, 'index']);

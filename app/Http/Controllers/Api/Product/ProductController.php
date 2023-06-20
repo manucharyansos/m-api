@@ -74,14 +74,19 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-    /**
-     * Display the specified product.
-     *
-     * @param Product $product
-     * @return JsonResponse
-     */
-    public function show(Product $product): JsonResponse
+
+    public function show($id): JsonResponse
     {
+        $product = Product::with('images', 'reviews')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found.'], 404);
+        }
+        if (empty($product->images)) {
+            $product->images = []; // Set an empty array if images are not available
+        }
+        if (empty($product->reviews)) {
+            $product->reviews = []; // Set an empty array if reviews are not available
+        }
         return response()->json($product);
     }
 
