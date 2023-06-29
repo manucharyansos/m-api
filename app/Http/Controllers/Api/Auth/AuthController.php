@@ -49,8 +49,12 @@ class AuthController extends Controller
         return response()->json('user logged out', 201);
     }
 
-    public function me()
+    public function me(Request $request): JsonResponse
     {
-        return response()->json(auth()->user());
+        if (auth()->user()){
+            return response()->json(auth()->user());
+        }else{
+            return response()->json('asd');
+        }
     }
 }

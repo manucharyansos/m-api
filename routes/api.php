@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Guest\GuestController;
 use App\Http\Controllers\Api\Product\CategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
 use App\Http\Controllers\Api\Product\ReviewController;
@@ -12,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
+Route::group(['prefix' => 'guests'], function (){
+    Route::get('getProducts', [GuestController::class, 'getProducts']);
+    Route::get('getCategories', [GuestController::class, 'getCategories']);
+    Route::get('/product/{id}', [GuestController::class, 'showProduct']);
+    Route::post('/reviews/{product}', [ReviewController::class, 'store']);
+    Route::get('/reviews/{product}', [ReviewController::class, 'index']);
+});
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('user',       [AuthController::class, 'me']);
@@ -27,20 +35,10 @@ Route::middleware('auth:sanctum')->group( function () {
     });
 
     Route::group(['prefix'=>'users'],function (){
-        Route::get('/', [UserController::class, 'index']);
+//        Route::get('/', [UserController::class, 'index']);
         Route::post('/update/info/{id}', [UserController::class, 'updateUser']);
         Route::post('/store', [UserController::class, 'store']);
         Route::delete('/userDelete/{id}', [UserController::class, 'destroy']);
-    });
-    Route::group(['prefix'=>'products'],function (){
-        Route::get('/', [ProductController::class, 'index']);
-        Route::post('/reviews/{product}', [ReviewController::class, 'store']);
-        Route::get('/reviews/{product}', [ReviewController::class, 'index']);
-        Route::get('/{id}/edit', [ProductController::class, 'edit']);
-        Route::get('/{id}', [ProductController::class, 'show']);
-    });
-    Route::group(['prefix'=>'categories'],function (){
-        Route::get('/', [CategoryController::class, 'index']);
     });
 });
 
