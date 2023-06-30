@@ -37,4 +37,17 @@ class GuestController extends Controller
         return response()->json($product);
     }
 
+    public function findCategoryWithProducts($id): JsonResponse
+    {
+        $category = Category::with(['products', 'products.images'])->find($id);
+
+        if ($category) {
+            $category->products->each(function ($product) {
+                $product->images = $product->images()->paginate(10);
+            });
+            return response()->json(['category' => $category]);
+        } else {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+    }
 }
