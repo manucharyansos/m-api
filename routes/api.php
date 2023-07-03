@@ -19,7 +19,8 @@ Route::group(['prefix' => 'guests'], function (){
     Route::get('/product/{id}', [GuestController::class, 'showProduct']);
     Route::post('/reviews/{product}', [ReviewController::class, 'store']);
     Route::get('/reviews/{product}', [ReviewController::class, 'index']);
-    Route::get('/findCategoryProducts/{id}', [GuestController::class, 'findCategoryWithProducts']);
+    Route::get('/findSubcategoryProducts/{id}', [GuestController::class, 'findSubcategoryWithProducts']);
+    Route::get('/findSubcategory/{id}', [GuestController::class, 'findSubcategory']);
 });
 
 Route::middleware('auth:sanctum')->group( function () {

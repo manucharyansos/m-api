@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Guest;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -37,14 +38,23 @@ class GuestController extends Controller
         return response()->json($product);
     }
 
-    public function findCategoryWithProducts($id): JsonResponse
+    public function findSubcategory($id): JsonResponse
     {
-        $category = Category::with(['subcategories.products.images'])->find($id);
-
-        if ($category) {
-            return response()->json(['category' => $category]);
+        $subcategory = Category::with(['subcategories'])->find($id);
+        if ($subcategory) {
+            return response()->json(['subcategory' => $subcategory->subcategories]);
         } else {
-            return response()->json(['error' => 'Category not found.'], 404);
+            return response()->json(['error' => 'Subcategory not found.'], 404);
+        }
+    }
+    public function findSubcategoryWithProducts($id): JsonResponse
+    {
+        $subcategory = Subcategory::with(['products.images'])->find($id);
+
+        if ($subcategory) {
+            return response()->json(['subcategory' => $subcategory]);
+        } else {
+            return response()->json(['error' => 'Subcategory not found.'], 404);
         }
     }
 }
