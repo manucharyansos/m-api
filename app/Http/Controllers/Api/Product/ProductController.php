@@ -37,19 +37,17 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'category_id' => 'required|integer',
+            'subcategory_id' => 'required|integer',
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
         $product = Product::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'price' => $validatedData['price'],
             'stock' => $validatedData['stock'],
-            'category_id' => $validatedData['category_id'],
+            'subcategory_id' => $validatedData['subcategory_id'],
         ]);
-
         foreach ($validatedData['images'] as $image) {
             $imageName = time() . '-' . $image->getClientOriginalName();
             $image->move(public_path('products-images'), $imageName);
@@ -57,7 +55,6 @@ class ProductController extends Controller
             $productImage = new ProductImage([
                 'image_path' => $imageName,
             ]);
-
             $product->images()->save($productImage);
         }
 
@@ -82,10 +79,10 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found.'], 404);
         }
         if (empty($product->images)) {
-            $product->images = []; // Set an empty array if images are not available
+            $product->images = [];
         }
         if (empty($product->reviews)) {
-            $product->reviews = []; // Set an empty array if reviews are not available
+            $product->reviews = [];
         }
         return response()->json($product);
     }

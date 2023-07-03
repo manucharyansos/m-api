@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -49,13 +50,19 @@ class DatabaseSeeder extends Seeder
         }
         Product::create([
 //            'images' => 'test',
-            'category_id' => 1,
+            'subcategory_id' => 1,
             'title' => 'Phone',
             'description' => 'description',
             'price' => 200,
             'stock' => 35
         ]);
         Category::create([
+            'name' => 'Man',
+            'image' => 'test',
+            'description' => 'description'
+        ]);
+        Subcategory::create([
+            'category_id' => 1,
             'name' => 'Man',
             'image' => 'test',
             'description' => 'description'

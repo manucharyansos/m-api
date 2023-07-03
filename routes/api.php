@@ -26,17 +26,14 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('user',       [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::middleware('admin')->group(function () {
-        Route::resource('products', ProductController::class);
-    });
-
     Route::group(['middleware' => ['admin']], function () {
+        Route::resource('products', ProductController::class);
         Route::resource('categories',CategoryController::class);
         Route::resource('subcategories',SubcategoryController::class);
     });
 
     Route::group(['prefix'=>'users'],function (){
-//        Route::get('/', [UserController::class, 'index']);
+        Route::get('/', [UserController::class, 'index']);
         Route::post('/update/info/{id}', [UserController::class, 'updateUser']);
         Route::post('/store', [UserController::class, 'store']);
         Route::delete('/userDelete/{id}', [UserController::class, 'destroy']);

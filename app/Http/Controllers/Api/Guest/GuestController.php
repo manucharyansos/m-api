@@ -18,7 +18,7 @@ class GuestController extends Controller
 
     public function getCategories(): JsonResponse
     {
-        $categories = Category::with('subcategories', 'products')->paginate(10);
+        $categories = Category::with('subcategories')->paginate(10);
         return response()->json(['category' => $categories]);
     }
 
@@ -29,22 +29,19 @@ class GuestController extends Controller
             return response()->json(['error' => 'Product not found.'], 404);
         }
         if (empty($product->images)) {
-            $product->images = []; // Set an empty array if images are not available
+            $product->images = [];
         }
         if (empty($product->reviews)) {
-            $product->reviews = []; // Set an empty array if reviews are not available
+            $product->reviews = [];
         }
         return response()->json($product);
     }
 
     public function findCategoryWithProducts($id): JsonResponse
     {
-        $category = Category::with(['products', 'products.images'])->find($id);
+        $category = Category::with(['subcategories.products.images'])->find($id);
 
         if ($category) {
-            $category->products->each(function ($product) {
-                $product->images = $product->images()->paginate(10);
-            });
             return response()->json(['category' => $category]);
         } else {
             return response()->json(['error' => 'Category not found.'], 404);
