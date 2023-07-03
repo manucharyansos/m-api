@@ -18,7 +18,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        User::truncate();
+        $this->call([
+            SubcategorySeeder::class,
+        ]);
+        $this->call([
+            CategorySeeder::class,
+        ]);
+        $this->call([
+            ProductSeeder::class,
+        ]);
+//        $this->call([
+//            ProductImageSeeder::class,
+//        ]);
         $users = [
             [
                 'name' => 'Admin',
@@ -48,24 +59,5 @@ class DatabaseSeeder extends Seeder
                 'role' => $user['role']
             ]);
         }
-        Product::create([
-//            'images' => 'test',
-            'subcategory_id' => 1,
-            'title' => 'Phone',
-            'description' => 'description',
-            'price' => 200,
-            'stock' => 35
-        ]);
-        Category::create([
-            'name' => 'Man',
-            'image' => 'test',
-            'description' => 'description'
-        ]);
-        Subcategory::create([
-            'category_id' => 1,
-            'name' => 'Man',
-            'image' => 'test',
-            'description' => 'description'
-        ]);
     }
 }
