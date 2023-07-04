@@ -12,11 +12,9 @@ class ProductImageFactory extends Factory
 
     public function definition()
     {
-        return [
-            'image_path' => $this->faker->imageUrl(),
-            'product_id' => function () {
-                return Product::factory()->create()->id;
-            },
-        ];
+//        return [
+//            'image_path' => $this->faker->imageUrl(),
+//            'product_id' => Product::factory(),
+//        ];
     }
 }

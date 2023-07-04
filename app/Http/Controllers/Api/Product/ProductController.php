@@ -50,7 +50,7 @@ class ProductController extends Controller
         ]);
         foreach ($validatedData['images'] as $image) {
             $imageName = time() . '-' . $image->getClientOriginalName();
-            $image->move(public_path('products-images'), $imageName);
+            $image->move(public_path('storage/products-images'), $imageName);
 
             $productImage = new ProductImage([
                 'image_path' => $imageName,
