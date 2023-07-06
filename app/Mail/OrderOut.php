@@ -20,7 +20,7 @@ class OrderOut extends Mailable
      */
     public function __construct($orderOut)
     {
-        $this->orderOut = $$orderOut;
+        $this->orderOut = $orderOut;
     }
 
     /**

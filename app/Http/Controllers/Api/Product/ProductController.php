@@ -97,14 +97,14 @@ class ProductController extends Controller
     public function update(Request $request, Product $product): JsonResponse
     {
         $validatedData = $request->validate([
-            'category_id' => 'required|integer',
+            'subcategory_id' => 'required|integer',
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $product->category_id = $validatedData['category_id'];
+        $product->subcategory_id = $validatedData['subcategory_id'];
         $product->title = $validatedData['title'];
         $product->description = $validatedData['description'];
         $product->price = $validatedData['price'];
