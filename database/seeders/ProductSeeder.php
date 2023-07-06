@@ -22,7 +22,30 @@ class ProductSeeder extends Seeder
 
         $subcategoryIds = Subcategory::pluck('id');
 
-        $imagePaths = ['image1.jpg', 'image2.png', 'image3.png', 'image4.png', 'image5.png'];
+        $imagePaths = [
+            'image1.jpg',
+            'image2.png',
+            'image3.png',
+            'image4.png',
+            'image5.png',
+            'barsetka1.jpg',
+            'barsetka2.jpg',
+            'barsetka3.jpg',
+            'barsetka4.jpg',
+            'barsetka5.jpg',
+            'woman-bag1.jpg',
+            'woman-bag2.jpg',
+            'woman-bag3.jpg',
+            'woman-bag4.jpg',
+            'woman-bag5.jpg',
+            'woman-wallet.jpg',
+            'woman-wallet2.jpg',
+            'woman-wallet3.jpg',
+            'woman-wallet4.jpg',
+            'woman-wallet5.jpg',
+            'woman-wallet6.jpg',
+
+        ];
 
         for ($i = 1; $i <= $productsCount; $i++) {
             $product = Product::create([

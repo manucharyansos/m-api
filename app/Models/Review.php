@@ -9,7 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Review extends Model
 {
     use HasFactory;
+
     protected $fillable = ['rating', 'comment'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function (Review $review) {
+            $review->product->average_rating = $review->product->averageRating();
+            $review->product->save();
+        });
+    }
 
     public function product(): BelongsTo
     {

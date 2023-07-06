@@ -24,6 +24,10 @@ class ReviewController extends Controller
             $review->user()->associate($request->user());
             $review->save();
 
+            $averageRating = $product->reviews()->average('rating');
+            $product->average_rating = $averageRating;
+            $product->save();
+
             return response()->json(['message' => 'Review created successfully']);
         } catch (Exception $e) {
             return response()->json(['errors' => $e->errors()], 422);

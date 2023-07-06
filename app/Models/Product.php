@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -23,8 +22,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function averageRating(): float
+    {
+        return $this->reviews()->avg('rating') ?? 0;
     }
 }

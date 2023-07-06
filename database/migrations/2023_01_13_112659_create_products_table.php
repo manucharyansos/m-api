@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->integer('stock');
+            $table->decimal('average_rating', 3, 2)->nullable()->default(null);
             $table->timestamps();
         });
     }
