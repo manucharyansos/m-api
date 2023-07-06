@@ -18,7 +18,7 @@ class SubcategoryFactory extends Factory
         return [
             'name' => $this->faker->unique()->word . $this->faker->unique()->randomNumber(),
             'description' => $this->faker->sentence,
-            'image' => 'Без-названия.jpg',
+            'image' => 'woman-wallet6.jpg',
             'category_id' => function () {
                 return \App\Models\Category::factory()->create()->id;
             },

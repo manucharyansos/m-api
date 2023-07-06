@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $this->faker->unique()->word . $this->faker->unique()->randomNumber(),
             'description' => $this->faker->sentence,
-            'image' => 'Без-названия.jpg',
+            'image' => 'image3.png',
         ];
     }
 }
