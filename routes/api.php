@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::resource('products', ProductController::class);
         Route::resource('categories',CategoryController::class);
         Route::resource('subcategories',SubcategoryController::class);
+        Route::delete('/deleteImage/{imageId}', [ProductController::class, 'deleteImage']);
     });
 
     Route::group(['prefix'=>'users'],function (){

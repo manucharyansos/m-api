@@ -131,4 +131,16 @@ class ProductController extends Controller
         $product->delete();
         return response()->json('Product deleted successfully', 204);
     }
+
+    public function deleteImage($imageId): JsonResponse
+    {
+        $image = ProductImage::find($imageId);
+
+        if ($image) {
+            Storage::disk('public')->delete($image->filename);
+            $image->delete();
+            return response()->json(['message' => 'Image deleted successfully']);
+        }
+        return response()->json(['message' => 'Image not found'], 404);
+    }
 }
