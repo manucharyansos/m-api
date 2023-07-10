@@ -15,10 +15,18 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
+        static $categoryNumber = 1;
+
+        $name = 'Category' . $categoryNumber;
+        $description = 'This is category description ' . $categoryNumber;
+        $image = 'images' . $categoryNumber . '.jpg';
+
+        $categoryNumber++;
+
         return [
-            'name' => $this->faker->unique()->word . $this->faker->unique()->randomNumber(),
-            'description' => $this->faker->sentence,
-            'image' => 'image3.png',
+            'name' => $name,
+            'description' => $description,
+            'image' => $image,
         ];
     }
 }
