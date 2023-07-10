@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\Product;
 
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderIn;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -117,6 +119,7 @@ class ProductController extends Controller
                 $product->images()->create(['path' => $path]);
             }
         }
+        Mail::to($request->user())->send(new OrderIn($product));
         return response()->json($product, 200);
     }
 

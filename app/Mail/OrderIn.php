@@ -20,7 +20,7 @@ class OrderIn extends Mailable
      */
     public function __construct($orderIn)
     {
-        $this->$orderIn = $$orderIn;
+        $this->$orderIn = $orderIn;
     }
 
     /**

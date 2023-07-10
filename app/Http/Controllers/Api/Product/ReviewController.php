@@ -21,7 +21,9 @@ class ReviewController extends Controller
         try {
             $review = new Review($validatedData);
             $review->product()->associate($product);
-            $review->user()->associate($request->user());
+            if ($review->user()) {
+                $review->user()->associate($request->user());
+            }
             $review->save();
 
             $averageRating = $product->reviews()->average('rating');

@@ -18,6 +18,15 @@ class CategoryController extends Controller
         return response()->json(['category' => $categories]);
     }
 
+    public function edit($id): JsonResponse
+    {
+        $category = Category::with('subcategories')->find($id);
+        if (!$category) {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+        return response()->json($category);
+    }
+
     public function store(Request $request): JsonResponse
     {
         $request->validate([
@@ -42,6 +51,56 @@ class CategoryController extends Controller
             'message' => 'Subcategory created successfully',
             'subcategory' => $subcategory,
         ], 201);
+    }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $category->name = $request->name;
+        $category->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('category-images'), $imageName);
+            $category->image = $imageName;
+        }
+
+        $category->save();
+
+        return response()->json([
+            'message' => 'Category updated successfully',
+            'category' => $category,
+        ]);
+    }
+
+    public function deleteImage($id): JsonResponse
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+
+        if ($category->image) {
+            $imagePath = public_path('category-images/' . $category->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+                $category->image = null;
+                $category->save();
+            }
+        }
+
+        return response()->json(['message' => 'Category image deleted successfully']);
     }
 
     public function destroy(Category $category): JsonResponse
