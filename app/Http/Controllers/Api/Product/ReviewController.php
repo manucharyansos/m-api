@@ -36,9 +36,14 @@ class ReviewController extends Controller
         }
     }
 
-    public function index(Product $product): JsonResponse
-    {
-        $reviews = $product->reviews()->with('user')->get();
-        return response()->json($reviews);
-    }
+//    public function index(Product $product): JsonResponse
+//    {
+//        $reviews = $product->reviews()->with('user')->get();
+//        if ($reviews){
+//            return response()->json($reviews);
+//        }else{
+//            return response()->json('jh');
+//        }
+//    }
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use DateTime;
 
 class Product extends Model
 {
@@ -31,5 +32,11 @@ class Product extends Model
     public function averageRating(): float
     {
         return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    public function getCreatedAtAttribute($value): string
+    {
+        $dateTime = new DateTime($value);
+        return $dateTime->format('d/m/Y');
     }
 }

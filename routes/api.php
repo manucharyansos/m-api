@@ -30,12 +30,13 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::resource('categories',CategoryController::class);
         Route::resource('subcategories',SubcategoryController::class);
         Route::delete('/deleteImage/{imageId}', [ProductController::class, 'deleteImage']);
+        Route::get('/getReviews/{product}', [ReviewController::class, 'index']);
+        Route::get('/getTest/{id}', [ReviewController::class, 'getReviews']);
 //        Route::delete('/deleteCategoryImage/{imageId}', [CategoryController::class, 'deleteImage']);
     });
 
     Route::group(['prefix' => 'reviews'], function (){
         Route::post('/create/{product}', [ReviewController::class, 'store']);
-        Route::get('/getReviews/{product}', [ReviewController::class, 'index']);
     });
 
     Route::group(['prefix'=>'users'],function (){

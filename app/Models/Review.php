@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use DateTime;
 
 class Review extends Model
 {
@@ -30,5 +31,11 @@ class Review extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCreatedAtAttribute($value): string
+    {
+        $dateTime = new DateTime($value);
+        return $dateTime->format('d/m/Y');
     }
 }
