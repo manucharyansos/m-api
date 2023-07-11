@@ -17,8 +17,6 @@ Route::group(['prefix' => 'guests'], function (){
     Route::get('getProducts', [GuestController::class, 'getProducts']);
     Route::get('getCategories', [GuestController::class, 'getCategories']);
     Route::get('/product/{id}', [GuestController::class, 'showProduct']);
-    Route::post('/reviews/{product}', [ReviewController::class, 'store']);
-    Route::get('/reviews/{product}', [ReviewController::class, 'index']);
     Route::get('/findSubcategoryProducts/{id}', [GuestController::class, 'findSubcategoryWithProducts']);
     Route::get('/findSubcategory/{id}', [GuestController::class, 'findSubcategory']);
 });
@@ -33,6 +31,11 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::resource('subcategories',SubcategoryController::class);
         Route::delete('/deleteImage/{imageId}', [ProductController::class, 'deleteImage']);
 //        Route::delete('/deleteCategoryImage/{imageId}', [CategoryController::class, 'deleteImage']);
+    });
+
+    Route::group(['prefix' => 'reviews'], function (){
+        Route::post('/create/{product}', [ReviewController::class, 'store']);
+        Route::get('/getReviews/{product}', [ReviewController::class, 'index']);
     });
 
     Route::group(['prefix'=>'users'],function (){

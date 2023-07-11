@@ -32,7 +32,7 @@ class ReviewController extends Controller
 
             return response()->json(['message' => 'Review created successfully']);
         } catch (Exception $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            return response()->json(['errors' => $e->getMessage()], 422);
         }
     }
 
