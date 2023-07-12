@@ -119,7 +119,7 @@ class ProductController extends Controller
                 $product->images()->create(['path' => $path]);
             }
         }
-        Mail::to($request->user())->send(new OrderIn($product));
+//        Mail::to($request->user())->send(new OrderIn($product));
         return response()->json($product, 200);
     }
 
