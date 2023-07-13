@@ -66,7 +66,7 @@ class ProductController extends Controller
 
     public function edit($id): JsonResponse
     {
-        $product = Product::with('images', 'reviews')->find($id);
+        $product = Product::with('images', 'reviews.user')->find($id);
         if (!$product) {
             return response()->json(['error' => 'Product not found.'], 404);
         }
@@ -89,34 +89,26 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-    /**
-     * Update the specified product in storage.
-     *
-     * @param Request $request
-     * @param Product $product
-     * @return JsonResponse
-     */
-    public function update(Request $request, Product $product): JsonResponse
+
+    public function updateProduct(Request $request, $id): JsonResponse
     {
-        $validatedData = $request->validate([
-            'subcategory_id' => 'required|integer',
-            'title' => 'required',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-        $product->subcategory_id = $validatedData['subcategory_id'];
-        $product->title = $validatedData['title'];
-        $product->description = $validatedData['description'];
-        $product->price = $validatedData['price'];
-        $product->stock = $validatedData['stock'];
+        $product = Product::findOrFail($id);
+        $product->subcategory_id = $request['subcategory_id'];
+        $product->title = $request['title'];
+        $product->description = $request['description'];
+        $product->price = $request['price'];
+        $product->stock = $request['stock'];
         $product->save();
 
-        if ($request->hasFile('images')) {
+        if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $product->images()->create(['path' => $path]);
+                $imageName = time() . '-' . $image->getClientOriginalName();
+                $image->move(public_path('storage/products-images'), $imageName);
+
+                $productImage = new ProductImage([
+                    'image_path' => $imageName,
+                ]);
+                $product->images()->save($productImage);
             }
         }
 //        Mail::to($request->user())->send(new OrderIn($product));

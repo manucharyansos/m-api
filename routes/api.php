@@ -31,7 +31,8 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::resource('subcategories',SubcategoryController::class);
         Route::delete('/deleteImage/{imageId}', [ProductController::class, 'deleteImage']);
         Route::get('/getReviews/{product}', [ReviewController::class, 'index']);
-        Route::get('/getTest/{id}', [ReviewController::class, 'getReviews']);
+//        Route::get('/getTest/{id}', [ReviewController::class, 'getReviews']);
+        Route::post('/updateProduct/{id}', [ProductController::class, 'updateProduct']);
 //        Route::delete('/deleteCategoryImage/{imageId}', [CategoryController::class, 'deleteImage']);
     });
 
